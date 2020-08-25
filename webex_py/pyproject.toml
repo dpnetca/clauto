@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "learning_webex_api"
+version = "0.1.0"
+description = "Learning Project for interacting with WebEx and WebEx Teams API's"
+authors = ["Denis Pointer <git@dpnet.ca>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.24.0"
+webexteamssdk = "^1.6"
+jupyterlab = "^2.2.6"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.8.3"
+bandit = "^1.6.2"
+black = "^19.10b0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
