@@ -5,4 +5,9 @@
   - several learning modules with guided labs to get started with Webex teams, and Webex device
 
 
+# Useful tools:
+- Postman REST API test tool: https://getpostman.com
+- ngrok public HTTP proxy service and client: https://ngrok.com/
+- SoapUI an open-source web service testing application for Simple Object Access Protocol (SOAP): https://www.soapui.org/
+
 
