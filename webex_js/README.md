@@ -13,5 +13,12 @@ export WEBEX\_BOT\_TOKEN=....
 export WEBEX\_BOT\_ROOMID=....
 
 -----------------
-Samnple Node.js bots
+# other gits from learning labs
+## Sample Node.js bots
 git clone https://github.com/CiscoDevNet/node-sparkbot-samples
+
+## Howdyai botkit
+https://github.com/howdyai/Botkit
+
+## Botkit Template
+git clone https://github.com/CiscoDevNet/botkit-template
