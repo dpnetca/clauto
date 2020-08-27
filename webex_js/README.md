@@ -12,3 +12,6 @@ export WEBEX\_BOT\_TOKEN=....
 ## BOT ROOM
 export WEBEX\_BOT\_ROOMID=....
 
+-----------------
+Samnple Node.js bots
+git clone https://github.com/CiscoDevNet/node-sparkbot-samples
