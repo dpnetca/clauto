@@ -22,3 +22,11 @@ https://github.com/howdyai/Botkit
 
 ## Botkit Template
 git clone https://github.com/CiscoDevNet/botkit-template
+
+
+## WebEx Teams OAuth Sample
+git clone https://github.com/CiscoDevNet/webex-teams-auth-sample
+    server locally with `npx http-server`
+
+## Webex teams integration sample
+git clone https://github.com/CiscoDevNet/webex-integration-sample
