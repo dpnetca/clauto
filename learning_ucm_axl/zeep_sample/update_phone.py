@@ -1,5 +1,5 @@
 """
-Connect to UCM add a new phone with minimum details
+Connect to UCM update phone description and CSS
 
 Author: Denis Pointer
 Website: dpnet.ca
