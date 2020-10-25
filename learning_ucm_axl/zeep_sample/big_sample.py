@@ -11,6 +11,17 @@ Actions:
 
 Author: Denis Pointer
 Website: dpnet.ca
+
+TODO:
+Actions to Add (not in order):
+    * add / udpate remove line css
+    * add / update / remove user
+    * add / update / remove 2 lines
+    * add phone w/ 1 line
+    * update phone to add 2nd line
+    * remove phone
+
+Create Log file, log the zeep actions sent and recieved
 """
 
 import os
