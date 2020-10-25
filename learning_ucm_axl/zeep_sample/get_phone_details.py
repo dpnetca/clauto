@@ -1,13 +1,12 @@
 """
-Connect to UCM read list of configured phones and display some
-Information about the phones to the screen
+Connect to UCM get details on a phone w/ name SEPAAAABBBB0001
+
 
 Author: Denis Pointer
 Website: dpnet.ca
 """
 
 import os
-from time import time
 
 from requests import Session
 from requests.auth import HTTPBasicAuth
@@ -20,11 +19,12 @@ from dotenv import load_dotenv
 # Disable insecure SSL warnings
 import urllib3
 
-st = time()
-
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 load_dotenv()
+
+# change name to search for a different phone
+phone_name = "SEPAAAABBBB0001"
 
 # Load Environmental Variable
 wsdl = os.getenv("WSDL_FILE")
@@ -32,7 +32,6 @@ username = os.getenv("UCM_USERNAME")
 password = os.getenv("UCM_PASSWORD")
 ucm_pub_url = f'https://{os.getenv("UCM_PUB_ADDRESS")}:8443/axl/'
 
-print(f"init: {time() - st}s")
 # Create Session, do not verify certificate, enable basic auth
 session = Session()
 session.verify = False
@@ -52,21 +51,16 @@ service = client.create_service(
     address=ucm_pub_url,
 )
 
-print(f"Zeep Setup: {time() - st}s")
 # % is used for wildcard matcing any number of characters
-list_phone_data = {"searchCriteria": {"name": "%"}, "returnedTags": {}}
+list_phone_data = {
+    "searchCriteria": {"name": phone_name},
+    "returnedTags": {},
+}
 
 phones = service.listPhone(**list_phone_data)
-print(f"phone List: {time() - st}s")
-for phone in phones["return"]["phone"]:
-    # all fields are None exept uuid, use uuid to get phone details
-    phone_detail = service.getPhone(uuid=phone["uuid"])
-
-    # print some information about the phone
-    print(f'name: {phone_detail["return"]["phone"]["name"]}')
-    print(f'description: {phone_detail["return"]["phone"]["description"]}')
-    print(f'model: {phone_detail["return"]["phone"]["model"]}')
-    for line in phone_detail["return"]["phone"]["lines"]["line"]:
-        print(f"Line {line['index']}: {line['dirn']['pattern']}")
-    print()
-print(f"Done: {time() - st}s")
+if phones["return"]:
+    for phone in phones["return"]["phone"]:
+        phone_detail = service.getPhone(uuid=phone["uuid"])
+        print(phone_detail["return"]["phone"])
+else:
+    print("Phone Not Found")
