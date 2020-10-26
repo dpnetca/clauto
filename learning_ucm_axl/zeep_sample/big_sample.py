@@ -44,37 +44,47 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 
 
-def setup_client_service():
-    # Load Environmental Variable
-    wsdl = os.getenv("WSDL_FILE")
-    username = os.getenv("UCM_USERNAME")
-    password = os.getenv("UCM_PASSWORD")
-    ucm_pub_url = f'https://{os.getenv("UCM_PUB_ADDRESS")}:8443/axl/'
+# Create Axl class as a wrapper around ZEEP functions
+class Axl:
+    def __init__(self):
 
-    # Create Session, do not verify certificate, enable basic auth
-    session = Session()
-    session.verify = False
-    session.auth = HTTPBasicAuth(username, password)
+        self.history = HistoryPlugin()
+        session = self._setup_session()
+        self.client = self._setup_client(session, [self.history])
+        self.service = self._setup_service()
 
-    # create transport with our session and 10 second timeout
-    transport = Transport(session=session, timeout=10)
+    def _setup_session(self):
+        # Create Session, do not verify certificate, enable basic auth
+        session = Session()
+        session.verify = False
+        session.auth = HTTPBasicAuth(
+            os.getenv("UCM_USERNAME"), os.getenv("UCM_PASSWORD")
+        )
+        return session
 
-    history = HistoryPlugin()
+    def _setup_client(self, session, plugins):
+        transport = Transport(session=session, timeout=10)
+        client = Client(
+            wsdl=os.getenv("WSDL_FILE"), transport=transport, plugins=plugins,
+        )
+        return client
 
-    # crete the Zeep client
-    client = Client(wsdl, transport=transport, plugins=[history])
-
-    # create the service proxy pointint to our UCM
-    service = client.create_service(
-        binding_name="{http://www.cisco.com/AXLAPIService/}AXLAPIBinding",
-        address=ucm_pub_url,
-    )
-    return client, service
+    def _setup_service(self):
+        # create the service proxy pointint to our UCM
+        service = self.client.create_service(
+            binding_name="{http://www.cisco.com/AXLAPIService/}AXLAPIBinding",
+            address=f'https://{os.getenv("UCM_PUB_ADDRESS")}:8443/axl/',
+        )
+        return service
 
 
 def main():
-    # this probably isn't good practice ...
-    client, service = setup_client_service()
+    # Initialize AXL Class
+    axl = Axl()
+
+    # setup aliases to avoid refactoring code (aka lazy)
+    client = axl.client
+    service = axl.service
 
     # Setup Factories
     axl_factory = client.type_factory("ns0")
